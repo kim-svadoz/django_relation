@@ -6,8 +6,9 @@
 <hr>
 <p>{{ articles.all|length }}개의 글</p>
 {% for article in articles %}
+<p>작성자 : {{ article.user.username }}</p>
  <p>{{ article.pk }}번째 글</p>
- <p>{{ article.title }}</p>
+ <h2>{{ article.title }}</h2>
  <a href="{% url 'articles:detail' article.pk %}">[DETAIL]</a>
  <hr>
 {% endfor %}
