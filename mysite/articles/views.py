@@ -90,7 +90,7 @@ def comment_create(request, article_pk):
                 'comment_form': comment_form,
                 'article': article,
             }
-    return redirect('article:detail', context)
+    return redirect('articles:detail', context)
 
 @login_required
 @require_POST
@@ -99,3 +99,26 @@ def comment_delete(request, article_pk, comment_pk):
     if comment.user.username == request.user.username:
         comment.delete()
         return redirect('articles:detail', article_pk)
+
+@login_required
+def like(request, article_pk):
+    # 특정 게시물에 대한 정보
+    article = get_object_or_404(Article, pk=article_pk)
+    # 좋아요를 누른 유저에 대한 정보
+    user = request.user
+    # 사용자가 게시글의 좋아요 목록에 있으면 지우고 없으면 추가한다.
+    if user in article.like_users.all():
+        article.like_users.remove(user)
+    else:
+        article.like_users.add(user)
+    return redirect('articles:index')
+
+@login_required
+def recommend(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    user = request.user
+    if user in article.recommend_users.all():
+        article.recommend_users.remove(user)
+    else:
+        article.recommend_users.add(user)
+    return redirect('articles:index')

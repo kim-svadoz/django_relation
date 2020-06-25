@@ -6,10 +6,23 @@
 <hr>
 <p>{{ articles.all|length }}개의 글</p>
 {% for article in articles %}
-<p>작성자 : {{ article.user.username }}</p>
  <p>{{ article.pk }}번째 글</p>
  <h2>{{ article.title }}</h2>
- <a href="{% url 'articles:detail' article.pk %}">[DETAIL]</a>
+ <p>좋아요 개수 : {{ article.like_users.all|length}} </p>
+ <p>추천 개수 : {{ article.recommend_users.all|length}} </p>
+ <p>댓글 개수 : {{ article.comment_set.all|length}} </p>
+
+ <div class="container">
+   <div class="row">
+     <div class="col-lg-2">
+      {% include 'articles/_like.html' %}      
+     </div>
+
+     <div class="col-lg-2">
+      <a href="{% url 'articles:detail' article.pk %}">상세보기</a>
+     </div>
+   </div>
+ </div>
  <hr>
 {% endfor %}
 {% endblock %}
